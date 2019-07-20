@@ -30,11 +30,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'lunch_poll.apps.LunchPollConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

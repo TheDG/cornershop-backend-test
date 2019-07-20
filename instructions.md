@@ -1,4 +1,4 @@
-# Cornershop's Backend Test 
+# Cornershop's Backend Test
 
 This technical test requires the design and implementation (using Django) of a basic management system to coordinate the meal delivery for Cornershop employees.
 
@@ -9,7 +9,7 @@ Should you have any technical questions, please contact osvaldo@cornershopapp.co
 
 ## Description
 
-The current process consist of a person (Nora) sending a text message via Whatsapp to all the chilean employees, the message contains today's menu with the different alternatives for lunch. 
+The current process consist of a person (Nora) sending a text message via Whatsapp to all the chilean employees, the message contains today's menu with the different alternatives for lunch.
 
 > Hola!  
 > Dejo el menú de hoy :)
