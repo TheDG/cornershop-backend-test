@@ -13,4 +13,8 @@ Technical test requires the design and implementation (using Django) of a basic 
 * pip install -r stable-req.txt
 * Setup PSQL DB
    * Create DB, User, Rol
-* 
+* Setup env variables in .env inside cornershop project directory
+
+#### Mount application
+* `python manage.py runserver 3000`
+* Open `localhost:3000` with any browser
