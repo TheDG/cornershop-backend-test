@@ -14,6 +14,19 @@ Technical test requires the design and implementation (using Django) of a basic 
 * Setup PSQL DB
    * Create DB, User, Rol
 * Setup env variables in .env inside cornershop project directory
+* TODO: Migrations
+
+#### Run linters
+
+* Run all linters: `python ci/linters.py`
+
+#### Run Quality Control
+
+* Tests: `python manage.py test`
+* Coverage: `coverage report --skip-covered --fail-under=100`
+* Full quality control: `python ci/rake_quality.py`
+* ##### need to add additional apps to run_pylint file in CI directory
+
 
 #### Mount application
 * `python manage.py runserver 3000`
