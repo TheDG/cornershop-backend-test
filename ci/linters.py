@@ -15,5 +15,5 @@ PYFLAKES = 'python ci/run_pyflakes.py'
 os.system(PYFLAKES)
 
 print("------------running Pylint------------")
-PYLINT = 'pylint polls ci --load-plugins pylint_django'
+PYLINT = 'pylint lunch_poll pages ci --load-plugins pylint_django'
 os.system(PYLINT)
