@@ -1,4 +1,4 @@
-# cornershop-backent-test
+# cornershop-backend-test
 Technical test requires the design and implementation (using Django) of a basic management system to coordinate the meal delivery for Cornershop employees
 
 ##### Trello Board
@@ -14,6 +14,7 @@ Technical test requires the design and implementation (using Django) of a basic 
 * Setup PSQL DB
    * Create DB, User, Rol
 * Setup env variables in .env inside cornershop project directory
+* Create Admin User
 * TODO: Migrations
 
 #### Run linters

@@ -6,9 +6,15 @@
     </button>
     <div class="collapse navbar-collapse navbar-nav justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav align-items-center">
-        <li class="nav-item text-white">
-          TODO: Loged in?
+        {% if user.is_authenticated %}
+        <li class="nav-item text-white ml-3">
+          <a href="{% url 'logout' %}" class="text-white" >Logout</a>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="{% url 'login' %}" class="text-white" >Login</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </nav>

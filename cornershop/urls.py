@@ -18,4 +18,5 @@ from django.urls import path, include
 urlpatterns = [
     path('lunch_poll/', include('lunch_poll.urls')),
     path('', include('pages.urls')),
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
