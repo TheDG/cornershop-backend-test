@@ -1,14 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.db.models import F
-from django.views import generic
-from django.utils import timezone
+"""Lunch Poll views / router."""
 
-#from .models import Choice, Question
+from django.views import generic
 
 
 class IndexView(generic.ListView):
+    """Admin main page"""
     template_name = 'lunch_poll/index.html'
 
     def get_queryset(self):

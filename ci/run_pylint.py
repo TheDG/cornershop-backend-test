@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Main function /command for Pylint script. Runs pylint with djano plugin"""
-    test = "pylint lunch_poll ci --load-plugins pylint_django"
+    test = "pylint lunch_poll pages ci --load-plugins pylint_django"
     try:
         subprocess.check_output(test, shell=True)
     except subprocess.CalledProcessError:
