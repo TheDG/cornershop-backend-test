@@ -29,6 +29,6 @@ Technical test requires the design and implementation (using Django) of a basic 
 * ##### need to add additional apps to run_pylint file in CI directory
 
 
-#### Mount application
+#### Mount Dev application
 * `python manage.py runserver 3000`
 * Open `localhost:3000` with any browser
