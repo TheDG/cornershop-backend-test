@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "no-undef": "error",
+    "new-cap": ["error", { "capIsNewExceptions": ["DataTable"] }],
+    "quote-props": ["error", "as-needed"],
+    "space-in-parens": ["error", "never"],
+    "indent": ["error", 2]
+  },
+  "env": {
+    "jquery": true,
+    "es6": true,
+    "browser": true,
+    "amd": true
+  },
+  "globals": {
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}

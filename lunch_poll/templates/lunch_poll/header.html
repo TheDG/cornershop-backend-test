@@ -1,0 +1,21 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#" role="button">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse navbar-nav justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav align-items-center">
+        {% if user.is_authenticated %}
+        <li class="nav-item text-white ml-3">
+          <a href="{% url 'logout' %}" class="text-white" >Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="{% url 'login' %}" class="text-white" >Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+</header>

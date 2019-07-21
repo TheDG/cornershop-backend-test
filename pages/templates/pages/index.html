@@ -1,0 +1,13 @@
+{% extends 'lunch_poll/base.html' %}
+
+{% block content %}
+<div class="jumbotron m-5 pb-2">
+  <h1 class="display-4">Hello</h1>
+  <p class="lead">Application landing page</p>
+  <hr class="my-4">
+  <p>If you are not an admin, nice day to you</p>
+  <p class="lead text-center">
+    <a class="btn btn-primary btn-lg" href="{% url 'login' %}">Admin Login</a>
+  </p>
+</div>
+{% endblock %}
