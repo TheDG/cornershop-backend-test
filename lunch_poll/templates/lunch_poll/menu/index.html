@@ -15,7 +15,9 @@
       <tbody>
         {% for menu in menus %}
         <tr>
-          <th scope="row">{{ menu.id }}</th>
+          <th scope="row">
+            <a href="{% url 'lunch_poll:menu_show' menu.id %}">{{ menu.id }}</a>
+          </th>
           <td>{{ menu.menu_date }}</td>
           <td>TODO</td>
         </tr>
@@ -23,5 +25,23 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if menus.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ menus.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ menus.number }} of {{ menus.paginator.num_pages }}.
+        </span>
+
+        {% if menus.has_next %}
+            <a href="?page={{ menus.next_page_number }}">next</a>
+            <a href="?page={{ menus.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
 </div>
 {% endblock %}

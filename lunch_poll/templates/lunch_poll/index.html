@@ -1,5 +1,6 @@
 {% extends 'lunch_poll/base.html' %}
 
 {% block content %}
-  
+<a href="{% url 'lunch_poll:menu_new' %}">New Menu</a>
+<a href="{% url 'lunch_poll:menu' %}">Menu Index</a>
 {% endblock %}
