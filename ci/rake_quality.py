@@ -10,9 +10,11 @@ except subprocess.CalledProcessError:
     print("Failed Tests")
     quit(1)
 
-COVERAGE = 'coverage report --skip-covered --fail-under=90'
+COVERAGE1 = "coverage run --source='.' manage.py test"
+COVERAGE2 = 'coverage report --skip-covered --fail-under=100'
 try:
-    subprocess.check_output(COVERAGE, shell=True)
+    subprocess.check_output(COVERAGE1, shell=True)
+    subprocess.check_output(COVERAGE2, shell=True)
 except subprocess.CalledProcessError:
     print("Failed due to uncomplete coverage")
     quit(1)
