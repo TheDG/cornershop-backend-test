@@ -35,6 +35,13 @@ def create_users():
     admin.is_active = True
     admin.save()
 
+    staff = User.objects.create_user(first_name='Diego', last_name='Sinay',
+                                     username="staff", email='diegosinay@gmail.com',
+                                     password='123123')
+    staff.is_superuser = False
+    staff.is_active = True
+    staff.save()
+
 
 def run_seed(mode):
     """ Seed database based on mode
