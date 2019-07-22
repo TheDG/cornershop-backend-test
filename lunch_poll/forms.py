@@ -15,7 +15,6 @@ class MenuForm(forms.ModelForm):
 
     def clean_menu_date(self):
         menu_date = self.cleaned_data['menu_date']
-
         # Check if a date is not in the past.
         if menu_date < date.today():
             raise ValidationError(('Invalid date - Menu in past'))
