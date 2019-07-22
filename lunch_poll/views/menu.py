@@ -41,3 +41,15 @@ def menu_new(request):
 def menu_show(request, menu_id):
     menu = get_object_or_404(Menu, pk=menu_id)
     return render(request, 'lunch_poll/menu/show.html', {'menu': menu})
+
+@login_required(login_url='/accounts/login/')
+@permission_required('lunch_poll.delete_menu')
+def menu_destroy(request, menu_id):
+    menu = get_object_or_404(Menu, pk=menu_id)
+    if request.method == 'POST':
+        menu.delete()
+    menus = Menu.objects.all().order_by('menu_date')
+    paginator = Paginator(menus, 10)
+    page = request.GET.get('page')
+    menus = paginator.get_page(page)
+    return render(request, 'lunch_poll/menu/index.html', {'menus': menus})

@@ -10,6 +10,8 @@
           <th scope="col">#</th>
           <th scope="col">Date</th>
           <th scope="col">Total Votes</th>
+          <th scope="col">
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +22,12 @@
           </th>
           <td>{{ menu.menu_date }}</td>
           <td>TODO</td>
+          <td>
+            <form action="{% url 'lunch_poll:menu_destroy' menu.id%}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="fas fa-times text-danger"></button>
+            </form>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
