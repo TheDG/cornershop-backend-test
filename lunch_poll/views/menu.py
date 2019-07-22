@@ -1,12 +1,13 @@
 """Lunch Poll menu views / router."""
 
-from django.contrib.auth.decorators import login_required, permission_required
-from lunch_poll.forms import MenuForm
-from lunch_poll.models import Menu
+
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required, permission_required
+from lunch_poll.forms import MenuForm
+from lunch_poll.models import Menu
 
 
 @login_required(login_url='/accounts/login/')
@@ -21,12 +22,11 @@ def menu(request):
             return HttpResponseRedirect(reverse('lunch_poll:index'))
         return render(request, 'lunch_poll/menu/new.html', {'form': form})
     # Index action
-    else:
-        menus = Menu.objects.all().order_by('menu_date')
-        paginator = Paginator(menus, 10)
-        page = request.GET.get('page')
-        menus = paginator.get_page(page)
-        return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
+    menus = Menu.objects.all().order_by('menu_date')
+    paginator = Paginator(menus, 10)
+    page = request.GET.get('page')
+    menus = paginator.get_page(page)
+    return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
 
 
 @login_required(login_url='/accounts/login/')
@@ -39,15 +39,16 @@ def menu_new(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('lunch_poll.view_menu')
 def menu_show(request, menu_id):
-    menu = get_object_or_404(Menu, pk=menu_id)
-    return render(request, 'lunch_poll/menu/show.html', {'menu': menu})
+    current_menu = get_object_or_404(Menu, pk=menu_id)
+    return render(request, 'lunch_poll/menu/show.html', {'menu': current_menu})
+
 
 @login_required(login_url='/accounts/login/')
 @permission_required('lunch_poll.delete_menu')
 def menu_destroy(request, menu_id):
-    menu = get_object_or_404(Menu, pk=menu_id)
+    current_menu = get_object_or_404(Menu, pk=menu_id)
     if request.method == 'POST':
-        menu.delete()
+        current_menu.delete()
     menus = Menu.objects.all().order_by('menu_date')
     paginator = Paginator(menus, 10)
     page = request.GET.get('page')

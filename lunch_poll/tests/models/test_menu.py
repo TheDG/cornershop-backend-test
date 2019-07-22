@@ -20,10 +20,11 @@ class MenuActiveTests(TestCase):
         past_menu = PastMenuFactory()
         self.assertIs(past_menu.is_active(), False)
 
+
 class MenuCreateTests(TestCase):
 
     def test_menu_in_with_same_date(self):
         """if menu with date existes, raises error"""
-        future_menu = FutureMenuFactory()
+        FutureMenuFactory()
         with self.assertRaises(Exception):
             FutureMenuFactory()

@@ -3,11 +3,9 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-
+from lunch_poll.models import Menu
 from ..factories.menus import FutureMenuFactory
 from ..factories.users import AdminFactory, StaffFactory
-
-from lunch_poll.models import Menu
 
 
 class MenuNew(TestCase):
@@ -80,8 +78,8 @@ class MenuPost(TestCase):
         user = AdminFactory()
         client.force_login(user)
         self.assertEqual(0, Menu.objects.all().count())
-        response = client.post(reverse('lunch_poll:menu'),
-                               {'menu_date': timezone.now().date(), 'menu_intro': 'Tester'})
+        client.post(reverse('lunch_poll:menu'),
+                    {'menu_date': timezone.now().date(), 'menu_intro': 'Tester'})
         self.assertEqual(1, Menu.objects.all().count())
 
     def test_admin_user_with_incorrect_input(self):

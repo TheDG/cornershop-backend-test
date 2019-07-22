@@ -1,9 +1,9 @@
-import datetime
-
 from django.db import models
 from django.utils import timezone
 
 # Create your models here.
+
+
 class Menu(models.Model):
     menu_intro = models.CharField(max_length=200)
     menu_date = models.DateField(unique=True)
@@ -17,6 +17,7 @@ class Menu(models.Model):
 
     is_active.short_description = 'Can still make a choice?'
     is_active.boolean = True
+
 
 class Options(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
