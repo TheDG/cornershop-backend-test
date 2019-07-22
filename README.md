@@ -4,6 +4,9 @@ Technical test requires the design and implementation (using Django) of a basic 
 ##### Trello Board
 * `https://trello.com/invite/b/Agr9GbdZ/47f7316d66653c7f0238493c294fef9a/cornershop-test`
 
+##### Staging app
+* `https://obscure-bayou-88944.herokuapp.com`
+
 ##### Development setup (OSX Guide)
 
 * Install brew
@@ -16,6 +19,10 @@ Technical test requires the design and implementation (using Django) of a basic 
 * Setup env variables in .env inside cornershop project directory
 * Create Admin User
 * TODO: Migrations
+
+#### Run Seedfile
+
+* `python manage.py seed --mode=refresh`
 
 #### Run linters
 
