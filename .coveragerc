@@ -7,4 +7,4 @@ omit =
     # omit this single file
     manage.py
     cornershop/wsgi.py
-    rake.py
+    pages/apps.py    

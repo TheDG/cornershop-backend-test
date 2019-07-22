@@ -9,7 +9,7 @@ class IndexView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
     login_url = '/accounts/login'
     redirect_field_name = 'redirect_to'
     template_name = 'lunch_poll/index.html'
-    permission_required = 'polls.can_vote'
+    context_object_name = 'data'
 
     def get_queryset(self):
         """Meanwhile return nothing"""

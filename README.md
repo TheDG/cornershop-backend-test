@@ -31,7 +31,9 @@ Technical test requires the design and implementation (using Django) of a basic 
 #### Run Quality Control
 
 * tests: `python manage.py test`
-* Coverage: `coverage report --skip-covered --fail-under=100`
+* Coverage:
+  * `coverage run --source='.' manage.py test`
+  * `coverage report --skip-covered --fail-under=100`
 * Full quality control: `python ci/rake_quality.py`
 * ##### need to add additional apps to run_pylint file in CI directory
 
