@@ -21,10 +21,10 @@ class Menu(models.Model):
     is_active.boolean = True
 
 
-class Options(models.Model):
+class Option(models.Model):
     """Options model."""
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
+    menu = models.ForeignKey(Menu, related_name="has_options", on_delete=models.CASCADE)
+    choice_text = models.TextField(verbose_name="Choice")
     votes = models.IntegerField(default=0)
 
     def __str__(self):
