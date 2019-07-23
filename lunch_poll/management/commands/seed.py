@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from lunch_poll.models import Menu, Option
+from lunch_poll.models import Menu, Option, Selection
 
 # python manage.py seed --mode=refresh
 
@@ -28,6 +28,7 @@ def clear_data():
     User.objects.all().delete()
     Menu.objects.all().delete()
     Option.objects.all().delete()
+    Selection.objects.all().delete()
 
 
 def create_users():
