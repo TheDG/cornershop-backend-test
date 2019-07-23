@@ -1,10 +1,11 @@
+"""Tests for model menu"""
 
 from django.test import TestCase
 from ..factories.menus import FutureMenuFactory, PresentMenuFactory, PastMenuFactory
 
 
 class MenuActiveTests(TestCase):
-
+    """test for menu active method"""
     def test_menu_in_the_future(self):
         """is_active() returns True for menus in future days"""
         future_menu = FutureMenuFactory()
@@ -22,7 +23,7 @@ class MenuActiveTests(TestCase):
 
 
 class MenuCreateTests(TestCase):
-
+    """test for the creation of a menu"""
     def test_menu_in_with_same_date(self):
         """if menu with date existes, raises error"""
         FutureMenuFactory()

@@ -1,10 +1,11 @@
+"""Lunch Poll models"""
+
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
 
 class Menu(models.Model):
+    """Menu model."""
     menu_intro = models.CharField(max_length=200)
     menu_date = models.DateField(unique=True)
 
@@ -12,6 +13,7 @@ class Menu(models.Model):
         return self.menu_intro
 
     def is_active(self):
+        """Returns true if menu is not on the past / been served."""
         now = timezone.now().date()
         return now <= self.menu_date
 
@@ -20,6 +22,7 @@ class Menu(models.Model):
 
 
 class Options(models.Model):
+    """Options model."""
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
