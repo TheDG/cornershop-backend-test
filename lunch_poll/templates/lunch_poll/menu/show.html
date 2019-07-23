@@ -3,8 +3,8 @@
 {% block content %}
 {% if messages %}
 <ul class="alert alert-danger">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -19,27 +19,38 @@
         <th>Date</th>
         <td>{{ menu.menu_date }}</td>
         <td></td>
+        <td></td>
       </tr>
       {% endif %}
       {% if menu.menu_intro %}
       <tr>
         <th>Menu Description</th>
         <td>{{ menu.menu_intro }}</td>
-        <td>
-        </td>
+        <td></td>
+        <td></td>
       </tr>
       {% endif %}
+      <!-- TODO: HERE To test concept REMOVE later -->
       {% if menu.has_options %}
       {% for option in menu.has_options.all %}
       <tr>
         <th>Menu Option</th>
         <td>{{option.choice_text}}</td>
+        <td>Total: {{option.votes}}</td>
+        <!-- TODO: HERE To test concept REMOVE later -->
         <td>
           <form action="{% url 'lunch_poll:selection_new'%}" method="post">
             {% csrf_token %}
             <input type="hidden" name="menu" value="{{menu.id}}">
             <input type="hidden" name="option" value="{{option.id}}">
-            <button type="submit" class="fas fa-plus-circle border-0"></button>
+            <div class=row>
+              <div class="col-11">
+                <input name="customization" class="form-control" placeholder="customization" type="text">
+              </div>
+              <div class="col-1">
+                <button type="submit" class="fas fa-plus-circle border-0 float-right"></button>
+              </div>
+            </div>
           </form>
         </td>
       </tr>

@@ -2,6 +2,7 @@
 # pylint: disable=W0201
 
 from django.utils import timezone
+from django.db.models import F
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
@@ -16,8 +17,7 @@ from django.contrib import messages
 @login_required(login_url='/accounts/login/')
 @permission_required('lunch_poll.add_selection')
 def selection_new(request):
-    """Post action for selecton"""
-    # create action
+    """Post action for selecton, missing refactor"""
     if request.method == "POST":
         form = SelectionForm(request.POST)
         form.instance.selected_by = request.user
@@ -30,6 +30,10 @@ def selection_new(request):
                 reverse('lunch_poll:menu_show',
                         kwargs={'menu_id': request.POST.get('menu')}))
         if form.is_valid():
+            # TODO: Transaction
+            selected_option = Option.objects.get(pk=request.POST['option'])
+            selected_option.votes = F('votes') + 1
+            selected_option.save()
             form.save()
             messages.success(request, 'Succesfully chose menu option')
     return render(request, ('pages/index.html'))

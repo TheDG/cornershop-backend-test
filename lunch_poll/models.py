@@ -3,6 +3,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 
 class Menu(models.Model):
@@ -21,6 +22,10 @@ class Menu(models.Model):
     is_active.short_description = 'Can still make a choice?'
     is_active.boolean = True
 
+    def votes(self):
+        """Return the total amount of selections"""
+        options = Option.objects.filter(menu=self)
+        return options.aggregate(Sum('votes'))['votes__sum']
 
 class Option(models.Model):
     """Options model."""
@@ -39,6 +44,7 @@ class Selection(models.Model):
     selected_by = models.ForeignKey(User, on_delete=models.CASCADE)
     # SHould be normalized, but for simplicity using redundant data
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    customization = models.TextField()
 
     class Meta:
         constraints = [
