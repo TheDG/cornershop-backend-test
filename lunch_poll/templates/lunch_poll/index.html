@@ -1,5 +1,62 @@
 {% extends 'lunch_poll/base.html' %}
 
 {% block content %}
-  
+{% for menu in menus.all %}
+{{menu}}
+{% endfor %}
+<div class="container-fluid">
+  <div class="row mt-5">
+    <div class="col-md-9">
+      <div class="card text-center">
+        <div class="card-header">
+          <h4 class="mb-1">Week of {{start_date}} - {{end_date}}</h4>
+        </div>
+        <div class="card-body pb-1">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">M</th>
+                <th scope="col">T</th>
+                <th scope="col">W</th>
+                <th scope="col">Th</th>
+                <th scope="col">F</th>
+                <th scope="col">Sa</th>
+                <th scope="col">Su</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% for menu in menus %}
+                <td>
+                {% if menu.0 %}
+                <a href="{% url 'lunch_poll:menu_show' menu.1 %}" class="fas fa-search"></a>
+                {% else %}
+                <a href="{% url 'lunch_poll:menu_new_with_date' menu_date=menu.1 %}" class="fas fa-plus-square"></a>
+                {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-header">
+          <h4 class="mb-1">Menus</h4>
+        </div>
+        <div class="card-body">
+          <div class="tab-content" id="officeTabContent">
+            <a href="{% url 'lunch_poll:menu_new' %}">Create</a>
+            <hr>
+            <a href="{% url 'lunch_poll:menu' %}">Index</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

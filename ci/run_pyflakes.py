@@ -13,6 +13,8 @@ def ignore(path):
         return True
     if 'test' in parts:
         return True
+    if '__init__.py' in parts:
+        return True
     return False
 
 
