@@ -29,6 +29,7 @@ def clear_data():
     Menu.objects.all().delete()
     Option.objects.all().delete()
 
+
 def create_users():
     admin = User.objects.create_user(first_name='Diego', last_name='Sinay',
                                      username="diegosinay", email='diegosinay@gmail.com',

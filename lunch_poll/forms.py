@@ -3,11 +3,11 @@
 from datetime import date
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Menu, Option
 from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Fieldset, HTML, ButtonHolder, Submit, Row
 from .custom_layout_object import Formset
+from .models import Menu, Option
 
 
 class MenuForm(forms.ModelForm):
@@ -35,7 +35,8 @@ class MenuForm(forms.ModelForm):
                 HTML("<hr>"),
                 css_class="d-block text-center"
             ),
-            ButtonHolder(Submit('submit', 'save'), css_class="d-block btn-block")
+            ButtonHolder(Submit('submit', 'save'),
+                         css_class="d-block btn-block")
         )
 
     def clean_menu_date(self):
@@ -47,17 +48,19 @@ class MenuForm(forms.ModelForm):
 
 
 class OptionForm(forms.ModelForm):
+    """Inline form for option"""
     class Meta:
         model = Option
-        exclude = ()
+        fields = ['choice_text']
     choice_text = forms.CharField(widget=forms.Textarea)
 
-OptionFormSet = inlineformset_factory(
+
+OPTION_FORM_SET = inlineformset_factory(
     Menu, Option, form=OptionForm,
     fields=['choice_text'], extra=3, can_delete=True
 )
 
-OptionFormSetUpdate = inlineformset_factory(
+OPTION_FORM_SET_UPDATE = inlineformset_factory(
     Menu, Option, form=OptionForm,
     fields=['choice_text'], extra=0, can_delete=True
 )

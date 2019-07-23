@@ -1,4 +1,5 @@
 """Lunch Poll menu views / router."""
+# pylint: disable=W0201
 
 from django.utils import timezone
 from django.core.paginator import Paginator
@@ -6,13 +7,15 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from lunch_poll.forms import MenuForm
-from lunch_poll.models import Menu, Option
 from django.views.generic.edit import CreateView, UpdateView
 from django.db import transaction
-from lunch_poll.forms import OptionFormSet, OptionFormSetUpdate
+from lunch_poll.forms import OPTION_FORM_SET, OPTION_FORM_SET_UPDATE
+from lunch_poll.forms import MenuForm
+from lunch_poll.models import Menu
+
 
 class MenuCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    """Lunch Poll menu create view."""
     model = Menu
     template_name = 'lunch_poll/menu/new.html'
     form_class = MenuForm
@@ -20,19 +23,17 @@ class MenuCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     success_url = None
     permission_required = 'lunch_poll.add_menu'
 
-    def get_initial(self, **kwargs):
+    def get_initial(self):
         if 'menu_date' in self.kwargs:
             return {'menu_date': self.kwargs['menu_date']}
-        else:
-            return {'menu_date': timezone.now().date()}
-
+        return {'menu_date': timezone.now().date()}
 
     def get_context_data(self, **kwargs):
         data = super(MenuCreate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['choice_text'] = OptionFormSet(self.request.POST)
+            data['choice_text'] = OPTION_FORM_SET(self.request.POST)
         else:
-            data['choice_text'] = OptionFormSet()
+            data['choice_text'] = OPTION_FORM_SET()
         return data
 
     def form_valid(self, form):
@@ -82,20 +83,22 @@ def menu_destroy(request, menu_id):
     menus = paginator.get_page(page)
     return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
 
-class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView ):
+
+class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Lunch Poll menu update view/ router."""
     model = Menu
     template_name = 'lunch_poll/menu/new.html'
     form_class = MenuForm
 
     permission_required = 'lunch_poll.add_menu'
 
-
     def get_context_data(self, **kwargs):
         data = super(MenuUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
-            data['choice_text'] = OptionFormSetUpdate(self.request.POST, instance=self.object)
+            data['choice_text'] = OPTION_FORM_SET_UPDATE(
+                self.request.POST, instance=self.object)
         else:
-            data['choice_text'] = OptionFormSetUpdate(instance=self.object)
+            data['choice_text'] = OPTION_FORM_SET_UPDATE(instance=self.object)
         return data
 
     def form_valid(self, form):

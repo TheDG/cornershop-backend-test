@@ -1,6 +1,9 @@
+""" Code based from
+https://dev.to/zxenia/django-inline-formsets-with-class-based-views-and-crispy-forms-14o6"""
+
 from crispy_forms.layout import LayoutObject, TEMPLATE_PACK
-from django.shortcuts import render
 from django.template.loader import render_to_string
+
 
 class Formset(LayoutObject):
     template = "lunch_poll/menu/formset.html"

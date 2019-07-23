@@ -6,7 +6,7 @@ from django.utils import timezone
 from lunch_poll.models import Menu
 from ..factories.menus import FutureMenuFactory
 from ..factories.users import AdminFactory, StaffFactory
-from lunch_poll.forms import MenuForm
+
 
 class MenuNew(TestCase):
     """Test cases for lunch poll menu new"""
@@ -80,11 +80,12 @@ class MenuPost(TestCase):
         self.assertEqual(0, Menu.objects.all().count())
         form_data = {
             'menu_date': timezone.now().date(),
-            'menu_intro': 'Tester'
+            'menu_intro': 'Tester',
+            'has_options-TOTAL_FORMS': '1',
+            'has_options-INITIAL_FORMS': '0'
         }
-        form = MenuForm(form_data)
-        #self.client.post(reverse('lunch_poll:menu_new'), form)
-        #self.assertEqual(1, Menu.objects.all().count())
+        self.client.post(reverse('lunch_poll:menu_new'), form_data)
+        self.assertEqual(1, Menu.objects.all().count())
 
     def test_admin_user_with_incorrect_input(self):
         """ If its an admin user with incorrect input, does not creates menu. """
@@ -93,8 +94,9 @@ class MenuPost(TestCase):
         client.force_login(user)
         self.assertEqual(0, Menu.objects.all().count())
         form_data = {
-            'menu_intro': 'Tester'
+            'menu_intro': 'Tester',
+            'has_options-TOTAL_FORMS': '1',
+            'has_options-INITIAL_FORMS': '0'
         }
-        form = MenuForm(form_data)
-        #self.client.post(reverse('lunch_poll:menu_new'), form)
-        #self.assertFormError(response, 'form', 'menu_date', 'This field is required.')
+        self.client.post(reverse('lunch_poll:menu_new'), form_data)
+        self.assertEqual(0, Menu.objects.all().count())
