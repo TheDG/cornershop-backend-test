@@ -17,7 +17,7 @@ class MenuNew(TestCase):
         user = StaffFactory()
         client.force_login(user)
         response = client.get(reverse('lunch_poll:menu_new'))
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 403)
 
     def test_admin_user(self):
         """ If its an admin user, redirects to lunch poll index. """
@@ -78,8 +78,13 @@ class MenuPost(TestCase):
         user = AdminFactory()
         client.force_login(user)
         self.assertEqual(0, Menu.objects.all().count())
-        client.post(reverse('lunch_poll:menu'),
-                    {'menu_date': timezone.now().date(), 'menu_intro': 'Tester'})
+        form_data = {
+            'menu_date': timezone.now().date(),
+            'menu_intro': 'Tester',
+            'has_options-TOTAL_FORMS': '1',
+            'has_options-INITIAL_FORMS': '0'
+        }
+        self.client.post(reverse('lunch_poll:menu_new'), form_data)
         self.assertEqual(1, Menu.objects.all().count())
 
     def test_admin_user_with_incorrect_input(self):
@@ -88,7 +93,10 @@ class MenuPost(TestCase):
         user = AdminFactory()
         client.force_login(user)
         self.assertEqual(0, Menu.objects.all().count())
-        response = client.post(reverse('lunch_poll:menu'), {})
+        form_data = {
+            'menu_intro': 'Tester',
+            'has_options-TOTAL_FORMS': '1',
+            'has_options-INITIAL_FORMS': '0'
+        }
+        self.client.post(reverse('lunch_poll:menu_new'), form_data)
         self.assertEqual(0, Menu.objects.all().count())
-        self.assertFormError(response, 'form', 'menu_date',
-                             'This field is required.')
