@@ -1,6 +1,13 @@
 {% extends 'lunch_poll/base.html' %}
 
 {% block content %}
+{% if messages %}
+<ul class="alert alert-danger">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div class="card">
   <div class="card-header">
     <h1><b>Menu #{{ menu.id }} - {{menu.menu_date}}</b></h1>
@@ -11,12 +18,15 @@
       <tr>
         <th>Date</th>
         <td>{{ menu.menu_date }}</td>
+        <td></td>
       </tr>
       {% endif %}
       {% if menu.menu_intro %}
       <tr>
         <th>Menu Description</th>
         <td>{{ menu.menu_intro }}</td>
+        <td>
+        </td>
       </tr>
       {% endif %}
       {% if menu.has_options %}
@@ -24,6 +34,14 @@
       <tr>
         <th>Menu Option</th>
         <td>{{option.choice_text}}</td>
+        <td>
+          <form action="{% url 'lunch_poll:selection_new'%}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="menu" value="{{menu.id}}">
+            <input type="hidden" name="option" value="{{option.id}}">
+            <button type="submit" class="fas fa-plus-circle border-0"></button>
+          </form>
+        </td>
       </tr>
       {% endfor %}
       {% endif %}

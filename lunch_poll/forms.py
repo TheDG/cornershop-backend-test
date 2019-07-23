@@ -7,7 +7,7 @@ from django.forms.models import inlineformset_factory
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Fieldset, HTML, ButtonHolder, Submit, Row
 from .custom_layout_object import Formset
-from .models import Menu, Option
+from .models import Menu, Option, Selection
 
 
 class MenuForm(forms.ModelForm):
@@ -15,6 +15,7 @@ class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
         fields = ['menu_intro', 'menu_date']
+
     menu_date = forms.DateField(widget=forms.SelectDateWidget)
     menu_intro = forms.CharField(widget=forms.Textarea)
 
@@ -64,3 +65,20 @@ OPTION_FORM_SET_UPDATE = inlineformset_factory(
     Menu, Option, form=OptionForm,
     fields=['choice_text'], extra=0, can_delete=True
 )
+
+class SelectionForm(forms.ModelForm):
+    """Form to create new selection"""
+    class Meta:
+        model = Selection
+        fields = ['option', 'menu']
+
+    def __init__(self, *args, **kwargs):
+        self.option = args[0].get('option')
+        self.menu = args[0].get('menu')
+        super(SelectionForm, self).__init__(*args, **kwargs)
+
+
+    def custom_validation(self, user):
+        selection = Selection.objects.filter(selected_by=user, menu=self.menu)
+        if selection.exists():
+            raise ValidationError(('User already chose selection for this menu'))

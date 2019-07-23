@@ -1,6 +1,13 @@
 {% extends 'lunch_poll/base.html' %}
 
 {% block content %}
+<ul class="alert alert-success">
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endif %}
+    {% endfor %}
+</ul>
 <div class="jumbotron m-5 pb-2">
   <h1 class="display-4">Hello</h1>
   <p class="lead">Application landing page</p>
