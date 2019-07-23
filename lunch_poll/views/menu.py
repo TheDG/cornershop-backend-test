@@ -7,17 +7,25 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from lunch_poll.forms import MenuForm
-from lunch_poll.models import Menu
+from lunch_poll.models import Menu, Option
 from django.views.generic.edit import CreateView, UpdateView
 from django.db import transaction
-from lunch_poll.forms import OptionFormSet
+from lunch_poll.forms import OptionFormSet, OptionFormSetUpdate
 
 class MenuCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Menu
     template_name = 'lunch_poll/menu/new.html'
     form_class = MenuForm
+
     success_url = None
     permission_required = 'lunch_poll.add_menu'
+
+    def get_initial(self, **kwargs):
+        if 'menu_date' in self.kwargs:
+            return {'menu_date': self.kwargs['menu_date']}
+        else:
+            return {'menu_date': timezone.now().date()}
+
 
     def get_context_data(self, **kwargs):
         data = super(MenuCreate, self).get_context_data(**kwargs)
@@ -54,19 +62,6 @@ def menu(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('lunch_poll.add_menu')
-def menu_new_with_date(request, menu_date):
-    """Get new menu form with initial date"""
-    form = MenuForm(initial={'menu_date': menu_date})
-    return render(request, 'lunch_poll/menu/new.html', {'form': form})
-
-
-def menu_new(request):
-    """Get new menu form with initial date set to today"""
-    return menu_new_with_date(request, timezone.now().date())
-
-
-@login_required(login_url='/accounts/login/')
 @permission_required('lunch_poll.view_menu')
 def menu_show(request, menu_id):
     """Get menu with id and show"""
@@ -86,3 +81,33 @@ def menu_destroy(request, menu_id):
     page = request.GET.get('page')
     menus = paginator.get_page(page)
     return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
+
+class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView ):
+    model = Menu
+    template_name = 'lunch_poll/menu/new.html'
+    form_class = MenuForm
+
+    permission_required = 'lunch_poll.add_menu'
+
+
+    def get_context_data(self, **kwargs):
+        data = super(MenuUpdate, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['choice_text'] = OptionFormSetUpdate(self.request.POST, instance=self.object)
+        else:
+            data['choice_text'] = OptionFormSetUpdate(instance=self.object)
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        titles = context['choice_text']
+        with transaction.atomic():
+            form.instance.created_by = self.request.user
+            self.object = form.save()
+            if titles.is_valid():
+                titles.instance = self.object
+                titles.save()
+        return super(MenuUpdate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('lunch_poll:index')

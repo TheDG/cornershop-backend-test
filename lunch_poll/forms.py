@@ -20,7 +20,6 @@ class MenuForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(MenuForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_show_errors = False
@@ -56,4 +55,9 @@ class OptionForm(forms.ModelForm):
 OptionFormSet = inlineformset_factory(
     Menu, Option, form=OptionForm,
     fields=['choice_text'], extra=3, can_delete=True
+)
+
+OptionFormSetUpdate = inlineformset_factory(
+    Menu, Option, form=OptionForm,
+    fields=['choice_text'], extra=0, can_delete=True
 )

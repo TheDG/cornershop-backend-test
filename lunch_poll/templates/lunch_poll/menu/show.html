@@ -1,14 +1,41 @@
 {% extends 'lunch_poll/base.html' %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-10 mt-5">
-    <div class="card">
-      <div class="card-body pb-0">
-        <h4 class="card-title text-center mb-4 mt-1">Menu for {{menu.menu_date}}</h4>
-        <hr>
-      </div>
-    </div>
+<div class="card">
+  <div class="card-header">
+    <h1><b>Menu #{{ menu.id }} - {{menu.menu_date}}</b></h1>
   </div>
+  <div class="card-body">
+    <table class="table">
+      {% if menu.menu_date %}
+      <tr>
+        <th>Date</th>
+        <td>{{ menu.menu_date }}</td>
+      </tr>
+      {% endif %}
+      {% if menu.menu_intro %}
+      <tr>
+        <th>Menu Description</th>
+        <td>{{ menu.menu_intro }}</td>
+      </tr>
+      {% endif %}
+      {% if menu.has_options %}
+      {% for option in menu.has_options.all %}
+      <tr>
+        <th>Menu Option</th>
+        <td>{{option.choice_text}}</td>
+      </tr>
+      {% endfor %}
+      {% endif %}
+    </table>
+
+  </div>
+</div>
+<div class="row mx-1">
+  <a class="btn btn-outline-info" href="{% url 'lunch_poll:menu_update' menu.id %}">Update</a>
+  <form action="{% url 'lunch_poll:menu_destroy' menu.id%}" method="post" class="m-0">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-danger">Destroy</button>
+  </form>
 </div>
 {% endblock %}
