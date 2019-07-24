@@ -1,0 +1,58 @@
+{% extends 'lunch_poll/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-10 mt-5">
+    <h2>Users</h2>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">First Name</th>
+          <th scope="col">
+            Email or # Number?
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <th scope="row">
+            <a href="{% url 'users:show' user.id %}">{{ user.id }}</a>
+          </th>
+          <td>{{ user.last_name }}</td>
+          <td>{{ user.first_name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <form action="{% url 'users:destroy' user.id%}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="fas fa-times text-danger border-0"></button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if users.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ menus.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ users.number }} of {{ users.paginator.num_pages }}.
+        </span>
+
+        {% if users.has_next %}
+            <a href="?page={{ users.next_page_number }}">next</a>
+            <a href="?page={{ users.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

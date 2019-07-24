@@ -66,6 +66,7 @@ OPTION_FORM_SET_UPDATE = inlineformset_factory(
     fields=['choice_text'], extra=0, can_delete=True
 )
 
+
 class SelectionForm(forms.ModelForm):
     """Form to create new selection"""
     class Meta:
@@ -77,8 +78,9 @@ class SelectionForm(forms.ModelForm):
         self.menu = args[0].get('menu')
         super(SelectionForm, self).__init__(*args, **kwargs)
 
-
     def custom_validation(self, user):
+        """Custom validation to check user has not selected option for this menu"""
         selection = Selection.objects.filter(selected_by=user, menu=self.menu)
         if selection.exists():
-            raise ValidationError(('User already chose selection for this menu'))
+            raise ValidationError(
+                ('User already chose selection for this menu'))

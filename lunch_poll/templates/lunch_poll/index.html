@@ -6,7 +6,7 @@
 {% endfor %}
 <div class="container-fluid">
   <div class="row mt-5">
-    <div class="col-md-9">
+    <div class="col-md-8">
       <div class="card text-center">
         <div class="card-header">
           <h4 class="mb-1">Week of {{start_date}} - {{end_date}}</h4>
@@ -28,11 +28,11 @@
               <tr>
                 {% for menu in menus %}
                 <td>
-                {% if menu.0 %}
-                <a href="{% url 'lunch_poll:menu_show' menu.1 %}" class="fas fa-search"></a>
-                {% else %}
-                <a href="{% url 'lunch_poll:menu_new_with_date' menu_date=menu.1 %}" class="fas fa-plus-square"></a>
-                {% endif %}
+                  {% if menu.0 %}
+                  <a href="{% url 'lunch_poll:menu_show' menu.1 %}" class="fas fa-search"></a>
+                  {% else %}
+                  <a href="{% url 'lunch_poll:menu_new_with_date' menu_date=menu.1 %}" class="fas fa-plus-square"></a>
+                  {% endif %}
                 </td>
                 {% endfor %}
               </tr>
@@ -42,21 +42,44 @@
       </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="card text-center">
         <div class="card-header">
-          <h4 class="mb-1">Menus</h4>
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item col-6">
+              <a class="nav-link active" id="menu-tab" href="#menu" role="tab" aria-controls="home" aria-selected="true" data-toggle="tab">
+                Menus
+              </a>
+            </li>
+            <li class="nav-item col-6">
+              <a class="nav-link" id="user-tab" href="#user" role="tab" aria-controls="home" aria-selected="true" data-toggle="tab">
+                Users
+              </a>
+            </li>
+          </ul>
         </div>
         <div class="card-body">
-          <div class="tab-content" id="officeTabContent">
-            <a href="{% url 'lunch_poll:menu_new' %}">Create</a>
-            <hr>
-            <a href="{% url 'lunch_poll:menu' %}">Index</a>
+          <div class="tab-content" id="ExtraTabContent">
+            <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="home-tab">
+              <div class="tab-content" id="officeTabContent">
+                <a href="{% url 'lunch_poll:menu_new' %}">New</a>
+                <hr>
+                <a href="{% url 'lunch_poll:menu' %}">Index</a>
+              </div>
+            </div>
+            <div class="tab-pane fade show" id="user" role="tabpanel" aria-labelledby="home-tab">
+              <div class="tab-content" id="officeTabContent">
+                <a href="{% url 'lunch_poll:menu_new' %}">New</a>
+                <hr>
+                <a href="{% url 'users:index' %}">Index</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 {% endblock %}
