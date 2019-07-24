@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'lunch_poll.apps.LunchPollConfig',
     'pages.apps.PagesConfig',
     'users.apps.UsersConfig',
+    'staff.apps.StaffConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

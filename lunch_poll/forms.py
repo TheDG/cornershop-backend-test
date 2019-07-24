@@ -71,11 +71,12 @@ class SelectionForm(forms.ModelForm):
     """Form to create new selection"""
     class Meta:
         model = Selection
-        fields = ['option', 'menu']
+        fields = ['option', 'menu', 'customization']
 
     def __init__(self, *args, **kwargs):
         self.option = args[0].get('option')
         self.menu = args[0].get('menu')
+        self.customization = args[0].get('customization')
         super(SelectionForm, self).__init__(*args, **kwargs)
 
     def custom_validation(self, user):
