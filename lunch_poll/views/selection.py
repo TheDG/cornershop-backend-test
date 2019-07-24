@@ -35,5 +35,5 @@ def selection_new(request):
             selected_option.votes = F('votes') + 1
             selected_option.save()
             form.save()
-            messages.success(request, 'Succesfully chose menu option')
+            messages.success(request, 'Succesfully choose menu option')
     return render(request, ('pages/index.html'))
