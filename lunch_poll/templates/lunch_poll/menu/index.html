@@ -3,7 +3,11 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-10 mt-5">
-    <h2>Menus</h2>
+    <h2>Menus
+      <a href="{% url 'lunch_poll:menu_new' %}">
+        <i class="fas fa-plus"></i>
+      </a>
+    </h2>
     <table class="table table-hover">
       <thead>
         <tr>

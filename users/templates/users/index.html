@@ -3,7 +3,11 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-10 mt-5">
-    <h2>Users</h2>
+    <h2>Users
+      <a href="{% url 'users:new' %}">
+        <i class="fas fa-plus"></i>
+      </a>
+    </h2>
     <table class="table table-hover">
       <thead>
         <tr>
