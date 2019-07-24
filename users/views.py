@@ -42,6 +42,8 @@ def create(request):
     """Create new user from form"""
     print("Hello")
     form = UserForm(request.POST)
+    password = User.objects.make_random_password()
+    form.password = password
     if form.is_valid():
         form.save()
         messages.success(request, "Succesfully created user")
