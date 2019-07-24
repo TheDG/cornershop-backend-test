@@ -1,0 +1,57 @@
+{% extends 'lunch_poll/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-6 mt-5">
+    <div class="card">
+      <article class="card-body pb-0">
+        <form action="{% url 'users:create' %}" method="post">
+          {% csrf_token %}
+          <h4 class="card-title text-center mb-4 mt-1">New User</h4>
+          <hr>
+          {% if form.errors %}
+          {% for field in form %}
+          {% for error in field.errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+          <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+          </div>
+          {% endfor %}
+          {% endif %}
+          {% for field in form %}
+          <div class="form-group">
+            <div class="input-group">
+              <div class="col-sm-4 col-form-label">
+                {{ field.label_tag }}<br>
+              </div>
+              <div class="col-sm-8">
+                {{ field }}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Create User </button>
+          </div>
+        </form>
+      </article>
+    </div>
+  </div>
+  <div class="col-6 mt-5">
+    <div class="card">
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <!-- TODO -->
+          <h1 class="display-4">Massive User upload from csv</h1>
+          <p class="lead">To come</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

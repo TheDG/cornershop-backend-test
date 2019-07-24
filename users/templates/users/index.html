@@ -3,8 +3,8 @@
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-10 mt-5">
-    <h2>Menus
-      <a href="{% url 'lunch_poll:menu_new' %}">
+    <h2>Users
+      <a href="{% url 'users:new' %}">
         <i class="fas fa-plus"></i>
       </a>
     </h2>
@@ -12,22 +12,25 @@
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Date</th>
-          <th scope="col">Total Votes</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">First Name</th>
           <th scope="col">
+            Email or # Number?
           </th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {% for menu in menus %}
+        {% for user in users %}
         <tr>
           <th scope="row">
-            <a href="{% url 'lunch_poll:menu_show' menu.id %}">{{ menu.id }}</a>
+            <a href="{% url 'users:show' user.id %}">{{ user.id }}</a>
           </th>
-          <td>{{ menu.menu_date }}</td>
-          <td>{{ menu.votes }}</td>
+          <td>{{ user.last_name }}</td>
+          <td>{{ user.first_name }}</td>
+          <td>{{ user.email }}</td>
           <td>
-            <form action="{% url 'lunch_poll:menu_destroy' menu.id%}" method="post">
+            <form action="{% url 'users:destroy' user.id%}" method="post">
               {% csrf_token %}
               <button type="submit" class="fas fa-times text-danger border-0"></button>
             </form>
@@ -41,18 +44,18 @@
 
 <div class="pagination">
     <span class="step-links">
-        {% if menus.has_previous %}
+        {% if users.has_previous %}
             <a href="?page=1">&laquo; first</a>
             <a href="?page={{ menus.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
-            Page {{ menus.number }} of {{ menus.paginator.num_pages }}.
+            Page {{ users.number }} of {{ users.paginator.num_pages }}.
         </span>
 
-        {% if menus.has_next %}
-            <a href="?page={{ menus.next_page_number }}">next</a>
-            <a href="?page={{ menus.paginator.num_pages }}">last &raquo;</a>
+        {% if users.has_next %}
+            <a href="?page={{ users.next_page_number }}">next</a>
+            <a href="?page={{ users.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
 </div>

@@ -27,6 +27,7 @@ class Menu(models.Model):
         options = Option.objects.filter(menu=self)
         return options.aggregate(Sum('votes'))['votes__sum']
 
+
 class Option(models.Model):
     """Options model."""
     menu = models.ForeignKey(
