@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib import messages
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -41,7 +42,6 @@ class Menu(models.Model):
     """Menu model."""
     menu_intro = models.CharField(max_length=200)
     menu_date = models.DateField(unique=True)
-    menu_date = models.DateField(unique=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     key = models.CharField(max_length=200, default=generate_key)
 
@@ -61,16 +61,21 @@ class Menu(models.Model):
         options = Option.objects.filter(menu=self)
         return options.aggregate(Sum('votes'))['votes__sum']
 
-    def send_slack(self, host):
+    def send_slack(self, request):
         """Send slack reminders to each user"""
         users = User.objects.filter(is_active=True, is_superuser=False)
+        client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
+        host = request.get_host()
         for user in users:
             url_user = encrypted_user(user, self)
-            client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
-            client.chat_postMessage(
-                channel=f"@{user.username}",
-                text=f"Click like to order lunch: http://{host}/menu/{self.uuid}?user={url_user}",
-                as_user=True)
+            try:
+                client.chat_postMessage(
+                    channel=f"@{user.username}",
+                    text=f"Click to order lunch: http://{host}/menu/{self.uuid}?user={url_user}",
+                    as_user=True)
+            except Exception:
+                messages.error(
+                    request, f"Couldn't send notification to {user.email}")
 
 
 class Option(models.Model):

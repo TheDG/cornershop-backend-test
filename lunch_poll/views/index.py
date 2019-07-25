@@ -29,7 +29,8 @@ class IndexView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
         start = now - datetime.timedelta(days=now.weekday())
         menus = []
         for num_day in range(7):
-            menu = Menu.objects.filter(menu_date=start + datetime.timedelta(days=num_day))
+            menu = Menu.objects.filter(
+                menu_date=start + datetime.timedelta(days=num_day))
             if menu.exists():
                 menus.append((True, menu.first().id))
             else:

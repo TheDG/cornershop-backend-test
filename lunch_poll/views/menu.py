@@ -14,7 +14,9 @@ from lunch_poll.forms import OPTION_FORM_SET, OPTION_FORM_SET_UPDATE
 from lunch_poll.forms import MenuForm
 from lunch_poll.models import Menu
 
+
 def use_paginator(objects, request):
+    """Auxiliar method to dry up code."""
     paginator = Paginator(objects, 10)
     page = request.GET.get('page')
     return paginator.get_page(page)
@@ -121,6 +123,6 @@ class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 def reminder(request, menu_id):
     """Controller to send slack reminder"""
     selected_menu = Menu.objects.get(pk=menu_id)
-    selected_menu.send_slack(request.get_host())
+    selected_menu.send_slack(request)
     messages.success(request, "Slack Reminders are being processed")
     return redirect(reverse('lunch_poll:menu_show', kwargs={'menu_id': menu_id}))
