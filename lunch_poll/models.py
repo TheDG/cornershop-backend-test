@@ -3,7 +3,7 @@
 import uuid
 import os
 import base64
-
+import slack
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -61,12 +61,17 @@ class Menu(models.Model):
         options = Option.objects.filter(menu=self)
         return options.aggregate(Sum('votes'))['votes__sum']
 
-    def send_slack(self):
+    def send_slack(self, host):
         """Send slack reminders to each user"""
         users = User.objects.filter(is_active=True, is_superuser=False)
         for user in users:
             aux = encrypted_user(user, self)
-            print(f"{self.uuid}?user={aux}")
+            client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
+            response = client.chat_postMessage(
+                    channel=f"@{user.username}",
+                    text=f"Click like to order lunch: http://{host}/menu/{self.uuid}?user={aux}",
+                    as_user=True)
+            print(response)
 
 
 class Option(models.Model):

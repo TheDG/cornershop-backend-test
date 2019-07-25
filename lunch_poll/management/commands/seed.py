@@ -41,7 +41,7 @@ def create_users():
     admin.save()
 
     staff = User.objects.create_user(first_name='John', last_name='Shaft',
-                                     username="staff", email='duty@booty.com',
+                                     username="Tester", email='duty@booty.com',
                                      password='123123')
     staff.is_superuser = False
     staff.is_active = True
