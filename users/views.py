@@ -10,7 +10,6 @@ from .forms import UserForm
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('users.add_user')
 def users(request):
     """User index controller"""
     display_users = User.objects.all().order_by('last_name')
@@ -40,7 +39,6 @@ def new(request):
 @permission_required('users.add_user')
 def create(request):
     """Create new user from form"""
-    print("Hello")
     form = UserForm(request.POST)
     password = User.objects.make_random_password()
     form.password = password

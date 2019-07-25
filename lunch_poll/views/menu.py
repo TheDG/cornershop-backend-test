@@ -3,12 +3,13 @@
 
 from django.utils import timezone
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.db import transaction
+from django.contrib import messages
 from lunch_poll.forms import OPTION_FORM_SET, OPTION_FORM_SET_UPDATE
 from lunch_poll.forms import MenuForm
 from lunch_poll.models import Menu
@@ -90,7 +91,7 @@ class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'lunch_poll/menu/new.html'
     form_class = MenuForm
 
-    permission_required = 'lunch_poll.add_menu'
+    permission_required = 'lunch_poll.change_menu'
 
     def get_context_data(self, **kwargs):
         data = super(MenuUpdate, self).get_context_data(**kwargs)
@@ -114,3 +115,13 @@ class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('lunch_poll:index')
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('lunch_poll.view_menu')
+def reminder(request, menu_id):
+    """Controller to send slack reminder"""
+    selected_menu = Menu.objects.get(pk=menu_id)
+    selected_menu.send_slack()
+    messages.success(request, "Slack Reminders are being processed")
+    return redirect(reverse('lunch_poll:menu_show', kwargs={'menu_id': menu_id}))

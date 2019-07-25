@@ -1,0 +1,36 @@
+{% extends 'lunch_poll/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <h1><b>Menu #{{ menu.id }} - {{menu.menu_date}}</b>
+        <a tabindex="0" class="btn btn-lg btn-danger float-right" role="button" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Extra info for today" data-content={{menu.menu_intro}}>
+          Description
+        </a>
+      </h1>
+    </div>
+    <div class="card-body">
+      <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-6">
+            <div class="card mb-3 card text-white bg-success">
+              <div class="card-header">
+                <h3>Choosen Menu
+                </h3>
+              </div>
+              <div class="card-body">
+                <p class="card-text"> {{selection.option.choice_text}} </p>
+                <p class="card-text border-top pt-2"> {{selection.customization}} </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

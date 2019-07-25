@@ -12,5 +12,5 @@ urlpatterns = [
     path('menu/<int:menu_id>', views.menu_show, name='menu_show'),
     path('menu/<int:pk>/update', views.MenuUpdate.as_view(), name='menu_update'),
     path('menu/<int:menu_id>/delete', views.menu_destroy, name='menu_destroy'),
-    path('selection/new', views.selection_new, name='selection_new'),
+    path('menu/<int:menu_id>/reminder', views.reminder, name='reminder'),
 ]
