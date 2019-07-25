@@ -47,11 +47,14 @@
   </div>
   <div class="col-6 mt-5">
     <div class="card">
-      <div class="jumbotron jumbotron-fluid">
+      <div class="jumbotron jumbotron-fluid mb-0 pb-5">
         <div class="container">
           <!-- TODO -->
-          <h1 class="display-4">Massive User upload from csv</h1>
-          <p class="lead">To come</p>
+          <h1 class="display-4">Upload all users in Slack App</h1>
+          <p class="lead">Only created new users</p>
+          <a href="{% url 'users:massive_upload' %}" class="btn btn-block btn-primary btn-lg">
+            Massive Upload
+          </a>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-"""Lunch Poll model forms"""
+"""Staff Selection model forms"""
 
 from django import forms
 from django.core.exceptions import ValidationError

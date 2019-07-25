@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:user_id>', views.show, name='show'),
     path('new', views.new, name='new'),
     path('create', views.create, name='create'),
-    path('<int:user_id>/delete', views.destroy, name='destroy')
+    path('<int:user_id>/delete', views.destroy, name='destroy'),
+    path('massive_upload', views.massive_upload, name='massive_upload')
 ]

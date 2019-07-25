@@ -3,16 +3,16 @@
 import uuid
 import os
 import base64
-import slack
+from django.db import models
+from django.db.models import Sum
+from django.utils import timezone
+from django.contrib.auth.models import User
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-from django.db.models import Sum
+import slack
 load_dotenv()
 
 
@@ -65,13 +65,12 @@ class Menu(models.Model):
         """Send slack reminders to each user"""
         users = User.objects.filter(is_active=True, is_superuser=False)
         for user in users:
-            aux = encrypted_user(user, self)
+            url_user = encrypted_user(user, self)
             client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
-            response = client.chat_postMessage(
-                    channel=f"@{user.username}",
-                    text=f"Click like to order lunch: http://{host}/menu/{self.uuid}?user={aux}",
-                    as_user=True)
-            print(response)
+            client.chat_postMessage(
+                channel=f"@{user.username}",
+                text=f"Click like to order lunch: http://{host}/menu/{self.uuid}?user={url_user}",
+                as_user=True)
 
 
 class Option(models.Model):

@@ -15,13 +15,15 @@ from .forms import SelectionForm
 from .models import Selection
 
 
+# TODO: REFactor this method
 def menu(request, menu_uuid):
     """Staff show menu"""
     selected_menu = get_object_or_404(Menu, uuid=menu_uuid)
     encrypted_user = request.GET.get('user', '')
-    f = Fernet(selected_menu.key)
+    fernet = Fernet(selected_menu.key)
     try:
-        username = f.decrypt(bytes(encrypted_user, 'utf-8')).decode('utf-8')
+        username = fernet.decrypt(
+            bytes(encrypted_user, 'utf-8')).decode('utf-8')
     except:
         return HttpResponseBadRequest("Corrupt Link + Data")
     user = get_object_or_404(User, username=username)

@@ -1,11 +1,13 @@
 """User Object views."""
 
+import os
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.urls import reverse
+import slack
 from .forms import UserForm
 
 
@@ -66,3 +68,27 @@ def destroy(request, user_id):
     page = request.GET.get('page')
     display_user = paginator.get_page(page)
     return render(request, 'users/index.html', {'users': display_user})
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('users.add_user')
+def massive_upload(request):
+    """Create Users from Slack app"""
+    client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
+    response = client.users_list()
+    if response['ok']:
+        for member in response['members']:
+            if member['name'] == 'slackbot' or member['is_bot'] is True:
+                continue
+            print(member['profile']['first_name'])
+            aux_name = member.get('real_name', 'Jane')
+            User.objects.get_or_create(
+                username=member['id'],
+                defaults={
+                'first_name': member['profile'].get('first_name', aux_name),
+                'last_name': member['profile'].get('last_name', 'Doe'),
+                'email': member['profile'].get('email', 'No Email')
+                })
+    else:
+        messages.error(request, "Error mass loading users")
+    return redirect(reverse('users:new'))
