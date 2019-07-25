@@ -51,6 +51,6 @@ Technical test requires the design and implementation (using Django) of a basic 
 #### Additional Notes
 * For the Employee automatic auth the flow is as follows.
   * URL is send with a his username encrypted and attached to the url
-  * When employee clicks link token is used with key stored in menu to decode the user
-  * Checks if user is present in DB / integrity
+  * When employee clicks link encrypted-user is used decrypted with key stored in menu
+  * Checks if user is present in DB
   * Logins in user

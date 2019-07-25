@@ -17,7 +17,7 @@
           {% for option in menu.has_options.all %}
           <div class="col-6">
             <div class="card mb-3">
-              <form action="{% url 'lunch_poll:selection_new'%}" method="post">
+              <form action="{% url 'staff:selection_new'%}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="menu" value="{{menu.id}}">
                 <input type="hidden" name="option" value="{{option.id}}">

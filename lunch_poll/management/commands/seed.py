@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from lunch_poll.models import Menu, Option, Selection
+from lunch_poll.models import Menu, Option
+from staff.models import Selection
 
 # python manage.py seed --mode=refresh
 
