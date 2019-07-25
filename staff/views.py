@@ -47,14 +47,11 @@ def selection_new(request):
             for error in errors:
                 messages.error(request, error)
         if form.is_valid():
-            print("shiit")
             # TODO: Transaction
             selected_option = Option.objects.get(pk=request.POST['option'])
             selected_option.votes = F('votes') + 1
             selected_option.save()
             form.save()
             messages.success(request, 'Succesfully choose menu option')
-        else:
-            print(form.errors, len(form.errors))
     logout(request)
     return render(request, ('pages/index.html'))

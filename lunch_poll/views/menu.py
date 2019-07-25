@@ -14,6 +14,11 @@ from lunch_poll.forms import OPTION_FORM_SET, OPTION_FORM_SET_UPDATE
 from lunch_poll.forms import MenuForm
 from lunch_poll.models import Menu
 
+def use_paginator(objects, request):
+    paginator = Paginator(objects, 10)
+    page = request.GET.get('page')
+    return paginator.get_page(page)
+
 
 class MenuCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Lunch Poll menu create view."""
@@ -57,10 +62,7 @@ class MenuCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 def menu(request):
     """Menu index controller"""
     menus = Menu.objects.all().order_by('menu_date')
-    paginator = Paginator(menus, 10)
-    page = request.GET.get('page')
-    menus = paginator.get_page(page)
-    return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
+    return render(request, 'lunch_poll/menu/index.html', {'menus': use_paginator(menus, request)})
 
 
 @login_required(login_url='/accounts/login/')
@@ -79,10 +81,7 @@ def menu_destroy(request, menu_id):
     if request.method == 'POST':
         current_menu.delete()
     menus = Menu.objects.all().order_by('menu_date')
-    paginator = Paginator(menus, 10)
-    page = request.GET.get('page')
-    menus = paginator.get_page(page)
-    return render(request, 'lunch_poll/menu/index.html', {'menus': menus})
+    return render(request, 'lunch_poll/menu/index.html', {'menus': use_paginator(menus, request)})
 
 
 class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
