@@ -74,9 +74,21 @@ def destroy(request, user_id):
 @permission_required('users.add_user')
 def massive_upload(request):
     """Create Users from Slack app"""
-    user = 1
     client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
-    response = client.chat_postMessage(
-        channel=f"@{user}",
-        as_user=True)
-    return render(request, 'users/index.html', {'users': display_user})
+    response = client.users_list()
+    if response['ok']:
+        for member in response['members']:
+            if member['name'] == 'slackbot' or member['is_bot'] is True:
+                continue
+            print(member['profile']['first_name'])
+            aux_name = member.get('real_name', 'Jane')
+            User.objects.get_or_create(
+                username=member['id'],
+                defaults={
+                'first_name': member['profile'].get('first_name', aux_name),
+                'last_name': member['profile'].get('last_name', 'Doe'),
+                'email': member['profile'].get('email', 'No Email')
+                })
+    else:
+        messages.error(request, "Error mass loading users")
+    return redirect(reverse('users:new'))
