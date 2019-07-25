@@ -8,6 +8,9 @@
         <form action="{% url 'users:create' %}" method="post">
           {% csrf_token %}
           <h4 class="card-title text-center mb-4 mt-1">New User</h4>
+          <p class="text-danger text-center">
+            **For Slack notificatons to work, username has to be equal to Slack user ID**
+          <p>
           <hr>
           {% if form.errors %}
           {% for field in form %}

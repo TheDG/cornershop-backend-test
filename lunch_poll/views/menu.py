@@ -122,6 +122,6 @@ class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 def reminder(request, menu_id):
     """Controller to send slack reminder"""
     selected_menu = Menu.objects.get(pk=menu_id)
-    selected_menu.send_slack()
+    selected_menu.send_slack(request.get_host())
     messages.success(request, "Slack Reminders are being processed")
     return redirect(reverse('lunch_poll:menu_show', kwargs={'menu_id': menu_id}))
