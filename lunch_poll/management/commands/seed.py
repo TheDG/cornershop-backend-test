@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from lunch_poll.models import Menu, Option
+from staff.models import Selection
 
 # python manage.py seed --mode=refresh
 
@@ -25,6 +27,9 @@ class Command(BaseCommand):
 def clear_data():
     """Deletes all the table data"""
     User.objects.all().delete()
+    Menu.objects.all().delete()
+    Option.objects.all().delete()
+    Selection.objects.all().delete()
 
 
 def create_users():
@@ -34,6 +39,13 @@ def create_users():
     admin.is_superuser = True
     admin.is_active = True
     admin.save()
+
+    staff = User.objects.create_user(first_name='John', last_name='Shaft',
+                                     username="Tester", email='duty@booty.com',
+                                     password='123123')
+    staff.is_superuser = False
+    staff.is_active = True
+    staff.save()
 
 
 def run_seed(mode):
