@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views.generic.edit import CreateView, UpdateView
 from django.db import transaction
 from django.contrib import messages
+from lunch_poll.tasks import send_slack_task
 from lunch_poll.forms import OPTION_FORM_SET, OPTION_FORM_SET_UPDATE
 from lunch_poll.forms import MenuForm
 from lunch_poll.models import Menu
@@ -123,6 +124,6 @@ class MenuUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 def reminder(request, menu_id):
     """Controller to send slack reminder"""
     selected_menu = Menu.objects.get(pk=menu_id)
-    selected_menu.send_slack(request)
+    send_slack_task.delay(selected_menu.id, request.get_host())
     messages.success(request, "Slack Reminders are being processed")
     return redirect(reverse('lunch_poll:menu_show', kwargs={'menu_id': menu_id}))
