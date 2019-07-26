@@ -11,14 +11,18 @@ import slack
 from .forms import UserForm
 
 
+def use_paginator(objects, request):
+    """Auxiliar method to dry up code."""
+    paginator = Paginator(objects, 10)
+    page = request.GET.get('page')
+    return paginator.get_page(page)
+
+
 @login_required(login_url='/accounts/login/')
 def users(request):
     """User index controller"""
     display_users = User.objects.all().order_by('last_name')
-    paginator = Paginator(display_users, 10)
-    page = request.GET.get('page')
-    display_users = paginator.get_page(page)
-    return render(request, 'users/index.html', {'users': display_users})
+    return render(request, 'users/index.html', {'users': use_paginator(display_users, request)})
 
 
 @login_required(login_url='/accounts/login/')
@@ -63,32 +67,29 @@ def destroy(request, user_id):
             selected_user.delete()
         else:
             messages.error(request, "Can't delete an admin user")
-    display_user = User.objects.all().order_by('last_name')
-    paginator = Paginator(display_user, 10)
-    page = request.GET.get('page')
-    display_user = paginator.get_page(page)
-    return render(request, 'users/index.html', {'users': display_user})
+    display_users = User.objects.all().order_by('last_name')
+    return render(request, 'users/index.html', {'users': use_paginator(display_users, request)})
 
 
 @login_required(login_url='/accounts/login/')
 @permission_required('users.add_user')
 def massive_upload(request):
-    """Create Users from Slack app"""
+    """Create Users from Slack app. TODO: refactor move logic to User Model"""
     client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
     response = client.users_list()
     if response['ok']:
         for member in response['members']:
-            if member['name'] == 'slackbot' or member['is_bot'] is True:
+            if member.get('name', '') == 'slackbot' or member['is_bot'] is True:
                 continue
-            print(member['profile']['first_name'])
             aux_name = member.get('real_name', 'Jane')
             User.objects.get_or_create(
                 username=member['id'],
                 defaults={
-                'first_name': member['profile'].get('first_name', aux_name),
-                'last_name': member['profile'].get('last_name', 'Doe'),
-                'email': member['profile'].get('email', 'No Email')
+                    'first_name': member['profile'].get('first_name', aux_name),
+                    'last_name': member['profile'].get('last_name', 'Doe'),
+                    'email': member['profile'].get('email', 'No Email')
                 })
+        messages.success(request, "Sucesfully mass loaded users")
     else:
         messages.error(request, "Error mass loading users")
     return redirect(reverse('users:new'))

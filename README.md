@@ -34,6 +34,15 @@ Technical test requires the design and implementation (using Django) of a basic 
 * Register Users to Slack app through: `https://join.slack.com/t/cornershopbac-mpl1399/shared_invite/enQtNjkzOTc5MDM2MDk5LWYwMWY1MDQ5ZjZhYzU5OGE1MGI0ZTUwYTQ3MWVlNWEzZTcxODI4YTA2MzFlMjg3MzhkMmYwZWY5NWY2OTA1MDQ`
 * Run Mass User creation in 'Users/new' page
 
+#### Env File content
+* DB_NAME
+* DB_USER
+* DB_PASSWORD
+* SECRET_KEY
+* PASSWORD
+* SLACK_API_TOKEN
+
+
 #### Run Seedfile
 
 * `python manage.py seed --mode=refresh`

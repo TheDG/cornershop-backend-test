@@ -1,14 +1,13 @@
 """Staff views."""
 
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest
-from django.contrib.auth import login
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 from django.core.exceptions import ValidationError
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from cryptography.fernet import Fernet
 from lunch_poll.models import Menu, Option
 from .forms import SelectionForm
@@ -24,7 +23,7 @@ def menu(request, menu_uuid):
     try:
         username = fernet.decrypt(
             bytes(encrypted_user, 'utf-8')).decode('utf-8')
-    except:
+    except Exception:
         return HttpResponseBadRequest("Corrupt Link + Data")
     user = get_object_or_404(User, username=username)
     login(request, user)
@@ -42,19 +41,18 @@ def selection_new(request):
         form = SelectionForm(request.POST)
         form.instance.selected_by = request.user
         try:
-            form.custom_validation(request.user)
+            # TODO: Couldnt do it all in clean form method
+            form.unique_selection_validation(request.user)
+            form.time_validation()
         except ValidationError as errors:
             for error in errors:
                 messages.error(request, error)
-        if form.is_valid():
-            print("shiit")
-            # TODO: Transaction
+        else:
+            # TODO:TRansaction
             selected_option = Option.objects.get(pk=request.POST['option'])
             selected_option.votes = F('votes') + 1
             selected_option.save()
             form.save()
             messages.success(request, 'Succesfully choose menu option')
-        else:
-            print(form.errors, len(form.errors))
     logout(request)
     return render(request, ('pages/index.html'))
