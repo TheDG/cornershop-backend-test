@@ -24,6 +24,7 @@ Technical test requires the design and implementation (using Django) of a basic 
 * Install brew
 * Install pyenv
 * Install pyenv-virtualenv
+* Install Redis: brew install redis
 * Create Python 3.7 virtual environment and set it in .python-version file
 * pip install -r stable-req.txt
 * Setup PSQL DB
@@ -41,7 +42,7 @@ Technical test requires the design and implementation (using Django) of a basic 
 * SECRET_KEY
 * PASSWORD
 * SLACK_API_TOKEN
-
+* REDIS_URL
 
 #### Run Seedfile
 
@@ -62,7 +63,11 @@ Technical test requires the design and implementation (using Django) of a basic 
 
 
 #### Mount Dev application
-* `python manage.py runserver 3000`
+* Go to project root directory
+* run in one terminal: `python manage.py runserver 3000`
+* run in one terminal: `redis-server`
+* run in one terminal: `celery -A cornershop worker -l info`
+
 * Open `localhost:3000` with any browser
 
 #### Additional Notes
