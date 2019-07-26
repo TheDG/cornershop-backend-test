@@ -6,8 +6,8 @@ Technical test requires the design and implementation (using Django) of a basic 
 
 #### Staging app
 * `https://obscure-bayou-88944.herokuapp.com`
-* Admin username:
-* Admin password:
+* Admin username: diegosinay
+* Admin password: 123123
 * Add yourself to Slack app through: `https://join.slack.com/t/cornershopbac-mpl1399/shared_invite/enQtNjkzOTc5MDM2MDk5LWYwMWY1MDQ5ZjZhYzU5OGE1MGI0ZTUwYTQ3MWVlNWEzZTcxODI4YTA2MzFlMjg3MzhkMmYwZWY5NWY2OTA1MDQ`
 
 #### Slack app
