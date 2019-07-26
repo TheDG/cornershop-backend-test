@@ -7,7 +7,6 @@ from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.contrib import messages
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -61,11 +60,10 @@ class Menu(models.Model):
         options = Option.objects.filter(menu=self)
         return options.aggregate(Sum('votes'))['votes__sum']
 
-    def send_slack(self, request):
+    def send_slack(self, host):
         """Send slack reminders to each user"""
         users = User.objects.filter(is_active=True, is_superuser=False)
         client = slack.WebClient(token=os.getenv("SLACK_API_TOKEN"))
-        host = request.get_host()
         for user in users:
             url_user = encrypted_user(user, self)
             try:
@@ -74,8 +72,10 @@ class Menu(models.Model):
                     text=f"Click to order lunch: http://{host}/menu/{self.uuid}?user={url_user}",
                     as_user=True)
             except Exception:
-                messages.error(
-                    request, f"Couldn't send notification to {user.email}")
+                print("TODO: How to notify clients that failed"
+                      "Since Aysnc, cant access request for messages")
+                # messages.error(
+                # request, f"Couldn't send notification to {user.email}")
 
 
 class Option(models.Model):
