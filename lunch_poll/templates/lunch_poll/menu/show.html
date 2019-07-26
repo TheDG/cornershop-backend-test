@@ -55,8 +55,8 @@
 </div>
 {% if menu.has_options %}
 {% for option in menu.has_options.all %}
-<div class="modal fade" id="optionModal{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade bd-example-modal-lg" id="optionModal{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">People who chose Option #{{forloop.counter}}</h5>
@@ -68,7 +68,14 @@
         <ul class="list-group">
           {% for selection in option.selection_set.all %}
             <li class="list-group-item">{{selection.selected_by.first_name}} {{selection.selected_by.last_name}} |
-               {{selection.selected_by.email}} </li>
+               {{selection.selected_by.email}}
+               {% if selection.customization %}
+               <a tabindex="0" class="btn btn-outline-primary float-right" role="button" data-toggle="popover" data-trigger="focus" data-placement="left"
+               data-content="{{selection.customization}}">
+                Customization
+               </a>
+               {% endif %}
+            </li>
           {% endfor %}
         </ul>
       </div>
