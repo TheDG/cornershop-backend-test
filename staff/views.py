@@ -7,6 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
+from django.db import transaction
 from django.core.exceptions import ValidationError
 from cryptography.fernet import Fernet
 from lunch_poll.models import Menu, Option
@@ -48,11 +49,11 @@ def selection_new(request):
             for error in errors:
                 messages.error(request, error)
         else:
-            # TODO:TRansaction
-            selected_option = Option.objects.get(pk=request.POST['option'])
-            selected_option.votes = F('votes') + 1
-            selected_option.save()
-            form.save()
+            with transaction.atomic():
+                selected_option = Option.objects.get(pk=request.POST['option'])
+                selected_option.votes = F('votes') + 1
+                selected_option.save()
+                form.save()
             messages.success(request, 'Succesfully choose menu option')
     logout(request)
     return render(request, ('pages/index.html'))
