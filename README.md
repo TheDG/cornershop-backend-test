@@ -42,7 +42,7 @@ Technical test requires the design and implementation (using Django) of a basic 
 * SECRET_KEY
 * PASSWORD
 * SLACK_API_TOKEN
-
+* REDIS_URL
 
 #### Run Seedfile
 
