@@ -30,10 +30,11 @@ class SelectionForm(forms.ModelForm):
     def time_validation(self):
         """Custom validation to check if request is before today at 11 am """
         menu_date = Menu.objects.get(pk=self.menu).menu_date
-        now = timezone.now()
-        cut_off_time = timezone.now().replace(hour=11, minute=0, second=0, microsecond=0)
-        now_date = timezone.now().date()
+        now = timezone.localtime(timezone.now())
+        cut_off_time = timezone.localtime(timezone.now()).replace(
+            hour=11, minute=0, second=0, microsecond=0)
+        now_date = now.date()
         if menu_date < now_date:
             raise forms.ValidationError('This is a past menu')
-        if now_date == menu_date and timezone.localtime(now) > cut_off_time:
+        if now_date == menu_date and now > cut_off_time:
             raise forms.ValidationError('You are to late')

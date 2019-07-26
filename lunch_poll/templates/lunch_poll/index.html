@@ -27,7 +27,7 @@
             <tbody>
               <tr>
                 {% for menu in menus %}
-                <td>
+                <td class="text-center">
                   {% if menu.0 %}
                   <a href="{% url 'lunch_poll:menu_show' menu.1 %}" class="fas fa-search"></a>
                   {% else %}

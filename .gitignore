@@ -2,8 +2,6 @@
 *.DS_Store
 
 .env
-runtime.txt
-
 .idea/
 
 # Byte-compiled / optimized / DLL files
